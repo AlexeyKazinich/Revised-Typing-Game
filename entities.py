@@ -18,14 +18,14 @@ class Player:
     def draw(self,window):
         pg.draw.rect(window,self.color,(self.x,self.y,self.width,self.height))
 
-    def moveLeft(self,x):
+    def move_left(self,x):
         self.x -= x
 
-    def moveRight(self,x):
+    def move_right(self,x):
         self.x += x
 
-    def moveUp(self,y):
+    def move_up(self,y):
         self.y -= y
 
-    def moveDown(self,y):
+    def move_down(self,y):
         self.y += y

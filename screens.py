@@ -32,14 +32,14 @@ class Screen:
 
 class LoginScreen(Screen):
     
-    def addObjects(self):
+    def add_objects(self):
 
         #text boxes
         self.usernameBox = textBox(100,100,140,32,self.window)
-        self.usernameBox.setColor(self.inactiveColor)
+        self.usernameBox.set_color(self.inactiveColor)
 
         self.passwordBox = textBox(100,164,140,32,self.window)
-        self.passwordBox.setColor(self.inactiveColor)
+        self.passwordBox.set_color(self.inactiveColor)
 
         self.rectangles.append(self.usernameBox)
         self.rectangles.append(self.passwordBox)
@@ -51,33 +51,33 @@ class LoginScreen(Screen):
     def __init__(self,window):
         super().__init__(window)
         self.rectangles = []
-        self.addObjects() #adds textboxes and buttons
+        self.add_objects() #adds textboxes and buttons
         self.__allUsers = [] #array of users
         self.user = User() #creats a default user
-        self.__readFromFile() #loads allUsers
+        self.__read_from_file() #loads allUsers
 
 
-    def setActive(self, target):
+    def set_active(self, target):
         if target == "usernameBox":
-            self.usernameBox.setActive()
-            self.passwordBox.setDeactive()
+            self.usernameBox.set_active()
+            self.passwordBox.set_deactive()
         elif target == "passwordBox":
-            self.passwordBox.setActive()
-            self.usernameBox.setDeactive()
+            self.passwordBox.set_active()
+            self.usernameBox.set_deactive()
         else:
-            self.passwordBox.setDeactive()
-            self.usernameBox.setDeactive()
+            self.passwordBox.set_deactive()
+            self.usernameBox.set_deactive()
 
-    def __writeToFile(self):
+    def __write_to_file(self):
         pickle.dump(self.__allUsers,open("SAVE_DATA/Game_Data/Users.txt","wb"))
 
-    def __readFromFile(self):
+    def __read_from_file(self):
         try:
             self.__allUsers = pickle.load(open("SAVE_DATA/Game_Data/Users.txt","rb"))
         except FileNotFoundError:
-            self.__writeToFile()
+            self.__write_to_file()
     
-    def signUp(self):
+    def sign_up(self):
         self.user.Signup(self.usernameBox.text,self.passwordBox.text)
         self.__allUsers.append(self.user)
         return self.user
@@ -85,7 +85,7 @@ class LoginScreen(Screen):
     def login(self):
         pass
 
-    def loginAttempt(self):
+    def login_attempt(self):
         for user in self.__allUsers:
             #print("username: " + user.username)
             #print("password: " + user.password)
@@ -117,11 +117,11 @@ class MainMenuScreen(Screen):
         super().__init__(window)
         self.area = window.get_rect()
         self.buttons = []
-        self.addButtons()
+        self.add_buttons()
         self.user = User()
         self.userInfo = playerInfoBox(self.user,self.window)
 
-    def addButtons(self):
+    def add_buttons(self):
         self.startGameButton = Button(int(self.area.width/2)-75,int(self.area.height/6),150,32,"Start Game",self.window)
         self.settingsButton = Button(int(self.area.width/2)-75,int(self.area.height/6)*2,150,32,"Settings",self.window)
         self.leaderboardButton = Button(int(self.area.width/2)-75,int(self.area.height/6)*3,150,32,"Leaderboard",self.window)
@@ -133,7 +133,7 @@ class MainMenuScreen(Screen):
         self.buttons.append(self.quitButton)
         self.buttons.append(self.logoutButton)
     
-    def updateUser(self,newuser : User):
+    def update_user(self,newuser : User):
         self.user = newuser
         self.userInfo = playerInfoBox(self.user,self.window)
     
@@ -151,10 +151,10 @@ class DifficultySelectScreen(Screen):
         super().__init__(window)
         self.area = window.get_rect()
         self.buttons = []
-        self.addButtons() #adds the buttons
-        self.addUserBox() #this is what shows the player stats
+        self.add_buttons() #adds the buttons
+        self.add_user_box() #this is what shows the player stats
 
-    def addButtons(self):
+    def add_buttons(self):
         self.easyButton = Button(self.area.width/2 -150,self.area.height*1/6,150,32,"Easy Mode",self.window)
         self.mediumButton = Button(self.area.width/2 -150,self.area.height*2/6,150,32,"Normal Mode",self.window)
         self.hardButton = Button(self.area.width/2 -150,self.area.height*3/6,150,32,"Hard Mode",self.window)
@@ -165,7 +165,7 @@ class DifficultySelectScreen(Screen):
         self.buttons.append(self.hardButton)
         self.buttons.append(self.backButton)
     
-    def addUserBox(self):
+    def add_user_box(self):
         pass
 
     def draw(self):
@@ -190,7 +190,7 @@ class GameScreen(Screen):
         self.pp = 0
         self.highScore = 0
 
-    def update_userState(self, user: User):
+    def update_userstate(self, user: User):
         self.highScore = user.Highscore
 
 

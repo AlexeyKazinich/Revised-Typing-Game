@@ -11,7 +11,7 @@ class DataCenter:
         #load all data in
         self.allusers = []
         self.user = User()
-        self.ReadFromFile()
+        self.read_from_file()
 
     def login(self, username, password):
         for user in self.allusers:
@@ -26,27 +26,27 @@ class DataCenter:
             return False
 
 
-    def __setInfo(self, user,username,password):
+    def __set_info(self, user,username,password):
         user.username = username
         user.password = password
 
     def signup(self, username, password):
         if(len(username) > 2 and len(password) > 2):
             self.user = User() #creates a new user
-            self.__setInfo(self.user, username, password) #sets pass and username for the user
+            self.__set_info(self.user, username, password) #sets pass and username for the user
             self.allusers.append(self.user) #adds the user to the list
-            self.SaveToFile() #writes the list to the file
+            self.save_to_file() #writes the list to the file
             return True
         else: return False
 
 
     #writes the list of users to the file
-    def SaveToFile(self):
+    def save_to_file(self):
         pickle.dump(self.allusers,open("SAVE_DATA/GAME_DATA/usernames.txt","wb")) 
 
 
     #reads from the file to get all the users, called by constructor
-    def ReadFromFile(self):
+    def read_from_file(self):
         try:
             self.allusers = pickle.load(open("SAVE_DATA/GAME_DATA/usernames.txt","rb"))
         except FileNotFoundError:
@@ -54,7 +54,7 @@ class DataCenter:
             pickle.dump(self.allusers,open("SAVE_DATA/GAME_DATA/usernames.txt","wb"))
 
     #TEMPORARY
-    def ReadAllData(self):
+    def read_all_data(self):
         for user in self.allusers:
             #print("USERNAME: "+user.username+" PASSWORD: "+user.password)
             pass
@@ -78,7 +78,7 @@ class User:
 
 
 
-    def getAcc(self):
+    def get_acc(self):
         num = 0.0
         if(len(self.TopTenAcc) != 0):
             for a in self.TopTenAcc:

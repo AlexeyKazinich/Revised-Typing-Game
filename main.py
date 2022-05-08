@@ -29,7 +29,7 @@ class State:
     def change_state(self, state):
         self.__state = state
 
-    def getState(self):
+    def get_state(self):
         return self.__state
 
 
@@ -61,27 +61,27 @@ class Game:
 
     def start(self):
         #starts the main loop
-        self.gameLoop()
+        self.game_loop()
 
     #main loop
-    def gameLoop(self):
+    def game_loop(self):
         self.run = True
         while self.run:
 
             #listen to clicks
             for event in pg.event.get():
                 if event.type == pg.QUIT:
-                    self.dataCenter.SaveToFile()
+                    self.dataCenter.save_to_file()
                     self.run = False
                 
                 #all buttons and other checks with logic for LoginScreen
-                if(self.state.getState() == "LoginScreen"):
-                    if(self.loginScreen.loginButton.getPressed()):
+                if(self.state.get_state() == "LoginScreen"):
+                    if(self.loginScreen.loginButton.get_pressed()):
                         if(self.dataCenter.login(self.loginScreen.usernameBox.text,self.loginScreen.passwordBox.text)):
                                 self.user = self.dataCenter.user
                                 self.state.change_state("MainMenu")
                         
-                    elif(self.loginScreen.signUpButton.getPressed()):
+                    elif(self.loginScreen.signUpButton.get_pressed()):
                         if(self.dataCenter.signup(self.loginScreen.usernameBox.text,self.loginScreen.passwordBox.text)):
                             self.user = self.dataCenter.user
                             self.state.change_state("MainMenu")
@@ -94,22 +94,22 @@ class Game:
                             #print(self.loginScreen.usernameBox.holdingCtrl)
                             if event.key == pg.K_BACKSPACE:
                                 if(self.loginScreen.usernameBox.holdingCtrl == True):
-                                    self.loginScreen.usernameBox.cntrlBackspace()
+                                    self.loginScreen.usernameBox.cntrl_backspace()
                                 else:
                                     self.loginScreen.usernameBox.backspace()
                             elif event.key == pg.K_LCTRL:
                                 self.loginScreen.usernameBox.holdingCtrl = True
                             elif event.key == pg.K_TAB:
-                                self.loginScreen.usernameBox.setDeactive()
-                                self.loginScreen.passwordBox.setActive()
+                                self.loginScreen.usernameBox.set_deactive()
+                                self.loginScreen.passwordBox.set_active()
                             else:
-                                self.loginScreen.usernameBox.appendText(event.unicode)
+                                self.loginScreen.usernameBox.append_text(event.unicode)
                         
                         elif(self.loginScreen.passwordBox.focused):
                             if event.key == pg.K_BACKSPACE:
                                 self.loginScreen.passwordBox.backspace()
                             else:
-                                self.loginScreen.passwordBox.appendText(event.unicode)
+                                self.loginScreen.passwordBox.append_text(event.unicode)
                     
 
                     #if a key was released
@@ -119,7 +119,7 @@ class Game:
                             #if the key that was released was left ctrl
                             if event.key == pg.K_LCTRL:
                                 self.loginScreen.usernameBox.holdingCtrl = False #set holding control to false
-                elif(self.state.getState() == "GameScreen"):
+                elif(self.state.get_state() == "GameScreen"):
                     if event.type == pg.KEYDOWN:
                         if event.key == pg.K_BACKSPACE:
                             self.gameScreen.typeBox.backspace()
@@ -127,48 +127,48 @@ class Game:
                             #do the check
                             self.gameScreen.check_word()
                         else:
-                            self.gameScreen.typeBox.appendText(event.unicode)
+                            self.gameScreen.typeBox.append_text(event.unicode)
                     
                 #if the gamestate is in mainMenu
-                elif(self.state.getState() == "MainMenu"):
-                    if(self.mainMenu.startGameButton.getPressed()):
+                elif(self.state.get_state() == "MainMenu"):
+                    if(self.mainMenu.startGameButton.get_pressed()):
                         self.state.change_state("DifficultySelectScreen")
                     
-                    elif(self.mainMenu.settingsButton.getPressed()):
+                    elif(self.mainMenu.settingsButton.get_pressed()):
                         pass
                     
-                    elif(self.mainMenu.leaderboardButton.getPressed()):
+                    elif(self.mainMenu.leaderboardButton.get_pressed()):
                         pass
 
-                    elif(self.mainMenu.logoutButton.getPressed()):
+                    elif(self.mainMenu.logoutButton.get_pressed()):
                         self.state.change_state("LoginScreen")
 
-                    elif(self.mainMenu.quitButton.getPressed()):
-                        self.dataCenter.SaveToFile()
+                    elif(self.mainMenu.quitButton.get_pressed()):
+                        self.dataCenter.save_to_file()
                         self.run = False
 
                 #if the gamestate is in gameScreen    
-                elif(self.state.getState() == "GameScreen"):
+                elif(self.state.get_state() == "GameScreen"):
                     pass
 
                 #if the gamestate is in DifficultySelectScreen
-                elif(self.state.getState() == "DifficultySelectScreen"):
-                    if(self.difficultySelectScreen.backButton.getPressed()):
+                elif(self.state.get_state() == "DifficultySelectScreen"):
+                    if(self.difficultySelectScreen.backButton.get_pressed()):
                         self.state.change_state("MainMenu")
                     
-                    elif(self.difficultySelectScreen.easyButton.getPressed()):
+                    elif(self.difficultySelectScreen.easyButton.get_pressed()):
                         self.gameScreen.dictionary = myDictionary()
-                        self.gameScreen.dictionary.setDifficulty("easy")
+                        self.gameScreen.dictionary.set_difficulty("easy")
                         self.state.change_state("GameScreen")
                     
-                    elif(self.difficultySelectScreen.mediumButton.getPressed()):
+                    elif(self.difficultySelectScreen.mediumButton.get_pressed()):
                         self.gameScreen.dictionary = myDictionary()
-                        self.gameScreen.dictionary.setDifficulty("medium")
+                        self.gameScreen.dictionary.set_difficulty("medium")
                         self.state.change_state("GameScreen")
                     
-                    elif(self.difficultySelectScreen.hardButton.getPressed()):
+                    elif(self.difficultySelectScreen.hardButton.get_pressed()):
                         self.gameScreen.dictionary = myDictionary()
-                        self.gameScreen.dictionary.setDifficulty("hard")
+                        self.gameScreen.dictionary.set_difficulty("hard")
                         self.state.change_state("GameScreen")
 
             ##################
@@ -176,19 +176,19 @@ class Game:
             ##################
 
             #if loginScreen is active draw that
-            if (self.state.getState() == "LoginScreen"):                 
+            if (self.state.get_state() == "LoginScreen"):                 
 
                 self.loginScreen.draw()
                 if(self.mouseFocus != 0):
                     if(self.loginScreen.loginButton.collidepoint(event.pos)):
-                        self.loginScreen.loginButton.setHover()
+                        self.loginScreen.loginButton.set_hover()
             
-            if (self.state.getState() == "MainMenu"):
-                self.mainMenu.updateUser(self.user)
+            if (self.state.get_state() == "MainMenu"):
+                self.mainMenu.update_user(self.user)
                 self.mainMenu.draw()
             
             #if GameScreen is active draw GameScreen
-            if(self.state.getState() == "GameScreen"):
+            if(self.state.get_state() == "GameScreen"):
                 if(self.gameScreen.failed == False):
                     self.gameScreen.draw()
                 else:
@@ -197,7 +197,7 @@ class Game:
                     #remove all words
                     self.gameScreen.words = []
 
-            if(self.state.getState() == "DifficultySelectScreen"):
+            if(self.state.get_state() == "DifficultySelectScreen"):
                 self.difficultySelectScreen.draw()
             
 

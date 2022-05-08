@@ -21,16 +21,16 @@ class Rectangle:
         self.__rect = pg.Rect(x,y,width,height)
         self.window = window
     
-    def setColor(self,R,G,B):
+    def set_color(self,R,G,B):
         self.color = pg.Color(R,G,B)
 
-    def setColor(self,color: str):
+    def set_color(self,color: str):
         self.color = pg.Color(str(color))
 
     def draw(self):
         pg.draw.rect(self.window,self.color,(self.x,self.y,self.width,self.height))
     
-    def drawBox(self):
+    def draw_box(self):
         pg.draw.rect(self.window,self.color,(self.x,self.y,self.width,self.height),2)
 
     def collidepoint(self,locations):
@@ -52,14 +52,14 @@ class ProgressBar:
         self.fillColor = fillColor
 
         #setting rectangle colors
-        self.backgroundRectangle.setColor(backgroundColor)
-        self.fillRectangle.setColor(fillColor)
+        self.backgroundRectangle.set_color(backgroundColor)
+        self.fillRectangle.set_color(fillColor)
 
         #progress variables
         self.totalProgress = 100.0 
         self.progress = 0.0
 
-    def updateProgress(self,progress: float, totalProgress: float):
+    def update_progress(self,progress: float, totalProgress: float):
         try:
             self.fillRectangle.width = int((progress / totalProgress)*self.backgroundRectangle.width)
         except ZeroDivisionError:
@@ -85,43 +85,43 @@ class textBox:
         self.font = pg.font.Font(None,32)
         self.textColor = pg.Color('lightskyblue3')
         self.__rectangle = Rectangle(self.x,self.y,self.width,self.height,window)
-        self.__rectangle.setColor('lightskyblue3')
+        self.__rectangle.set_color('lightskyblue3')
         self.holdingCtrl = False
         self.focused = False
 
-    def setActive(self):
+    def set_active(self):
         self.color = pg.Color('dodgerblue2')
         self.textColor = pg.Color('dodgerblue2')
-        self.__rectangle.setColor('dodgerblue2')
+        self.__rectangle.set_color('dodgerblue2')
         self.isActive = True
         self.focused = True
 
-    def setDeactive(self):
+    def set_deactive(self):
         self.color = pg.Color('lightskyblue3')
         self.textColor = pg.Color('lightskyblue3')
-        self.__rectangle.setColor('lightskyblue3')
+        self.__rectangle.set_color('lightskyblue3')
         self.isActive = False
         self.focused = False
     
-    def setColor(self,R,G,B):
+    def set_color(self,R,G,B):
         self.color = pg.Color(R,G,B)
         self.textColor = pg.Color(R,G,B)
 
-    def setColor(self,color):
+    def set_color(self,color):
         self.color = pg.Color(color)
         self.textColor = pg.Color(color)
     
-    def appendText(self,text):
+    def append_text(self,text):
         self.text += text
 
     def backspace(self):
         if(len(self.text) != 0):
             self.text = self.text[:-1]
 
-    def cntrlBackspace(self):
+    def cntrl_backspace(self):
         self.text = ""
 
-    def __updateWidth(self):
+    def __update_width(self):
         #check if the width of the box is smaller than the width of the text
         if(self.__rectangle.width < self.textRender.get_width()):
             self.__rectangle.width = self.textRender.get_width() + 10
@@ -135,9 +135,9 @@ class textBox:
         #draw text
         self.window.blit(self.textRender,(self.x+5,self.y+5)) 
 
-        self.__updateWidth()
+        self.__update_width()
         #draw rectangle
-        self.__rectangle.drawBox()
+        self.__rectangle.draw_box()
 
         self.check_click()
     
@@ -148,10 +148,10 @@ class textBox:
         if(pg.mouse.get_pressed()[0]):
             if(self.__rectangle.collidepoint(mouse_pos)):
                 self.focused = True
-                self.setActive()
+                self.set_active()
             else:
                 self.focused = False
-                self.setDeactive()
+                self.set_deactive()
 
 class Button:
     def __init__(self,x,y,width,height,text,window):
@@ -165,7 +165,7 @@ class Button:
         self.hoverColor = pg.Color('deepskyblue1')
         self.font = pg.font.Font(None,32)
         self.__rectangle = Rectangle(self.x,self.y,self.width,self.height,window)
-        self.__rectangle.setColor('lightskyblue3')
+        self.__rectangle.set_color('lightskyblue3')
         self.window = window
 
         #mouse events
@@ -174,28 +174,28 @@ class Button:
 
 
     #checks if the button was pressed, sets the value to false to prevent the button from staying pressed
-    def getPressed(self):
+    def get_pressed(self):
         temp = self.pressed
         self.pressed = False
         return temp
         
 
-    def setActive(self):
+    def set_active(self):
         self.color = pg.Color('dodgerblue2')
         self.textColor = pg.Color('dodgerblue2')
-        self.__rectangle.setColor('dodgerblue2')
+        self.__rectangle.set_color('dodgerblue2')
 
-    def setDeactive(self):
+    def set_deactive(self):
         self.color = pg.Color('lightskyblue3')
         self.textColor = pg.Color('lightskyblue3')
-        self.__rectangle.setColor('lightskyblue3')
+        self.__rectangle.set_color('lightskyblue3')
     
-    def setHover(self):
+    def set_hover(self):
         self.color = self.hoverColor
         self.textColor = self.hoverColor
-        self.__rectangle.setColor('deepskyblue1')
+        self.__rectangle.set_color('deepskyblue1')
 
-    def setColor(self,color):
+    def set_color(self,color):
         self.color = pg.Color(color)
         self.textColor = pg.Color(color)
 
@@ -215,7 +215,7 @@ class Button:
         self.textRender = self.font.render(self.text,True,self.textColor)
 
         #draw the outline
-        self.__rectangle.drawBox()
+        self.__rectangle.draw_box()
 
         #draw the text
         self.window.blit(self.textRender,(self.x+5,self.y+5))
@@ -226,15 +226,15 @@ class Button:
         mouse_pos = pg.mouse.get_pos()
         if self.__rectangle.collidepoint(mouse_pos):
             if(pg.mouse.get_pressed()[0]):
-                self.setActive()
+                self.set_active()
                 self.pressed = True
             else:
                 self.pressed = False
-                self.setDeactive()
+                self.set_deactive()
         
         else:
             if(pg.mouse.get_pressed()[0] != True):
-                self.setDeactive()
+                self.set_deactive()
                 self.pressed = False
 
 
@@ -256,20 +256,20 @@ class playerInfoBox:
         self.userbox_performance_color = self.color_UncommonScore
         self.userbox_name = self.user.username
         self.userbox_level = ("Lvl: "+ str(self.user.Level))
-        self.userbox_accuracy = str(self.user.getAcc()) + "%"
+        self.userbox_accuracy = str(self.user.get_acc()) + "%"
         self.userbox_playerWPM = str(self.user.TopTenWPM) + "WPM"
 
-        self.addObjects()
+        self.add_objects()
 
         #level bar
         self.level_bar = ProgressBar(self.userbox.x + self.userbox.width - 100,(self.userbox.y+self.userbox.height-11),100,10,'DARKGRAY','LIMEGREEN',self.window)
-        self.level_bar.updateProgress(15.0,100.0)
+        self.level_bar.update_progress(15.0,100.0)
 
 
-    def addObjects(self):
+    def add_objects(self):
         #box for the user info
         self.userbox = Rectangle((int(self.area.width /2) -150),0,300,70,self.window)
-        self.userbox.setColor(self.color_active) #set color
+        self.userbox.set_color(self.color_active) #set color
 
     
 
@@ -283,7 +283,7 @@ class playerInfoBox:
 
         #draw
         self.level_bar.draw()
-        self.userbox.drawBox()
+        self.userbox.draw_box()
 
         #drawing all the user specific things
         self.window.blit(userbox_level_surface,(self.userbox.x+self.userbox.width-int(userbox_level_surface.get_width())-2,self.userbox.y+self.userbox.height-35))
@@ -297,7 +297,7 @@ class Word():
         self.word = ""
         self.font = pg.font.Font(None,32)
         self.color_active = 'dodgerblue2'
-        self.word = dictionary.getWords().lower()
+        self.word = dictionary.get_words().lower()
         self.window = window
         self.y = y
         self.word_surface = self.font.render(self.word,True,pg.Color(self.color_active))
