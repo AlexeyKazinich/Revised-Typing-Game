@@ -1,0 +1,3 @@
+easy dict: A,s,re,didn,t,don,aren,ll,d,m,ve,inca,
+medium dictionary:couldn,condom
+hard dictionary:
