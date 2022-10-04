@@ -6,7 +6,6 @@ import numpy as np
 import threading
 
 #module import
-from entities import *
 from myDictionary import myDictionary
 from objects import *
 from userData import *
@@ -48,6 +47,9 @@ class LoginScreen(Screen):
         self.loginButton = Button(340,164,90,32,'login',self.window)
         self.signUpButton = Button(340,100,90,32,'signup',self.window)
     
+        #modifier
+        self.holding_LCTRL = False
+
     def __init__(self,window):
         super().__init__(window)
         self.rectangles = []
@@ -94,7 +96,42 @@ class LoginScreen(Screen):
                 return True
         return False
 
+    def button_press_event(self,letter: str):
 
+        #check what textbox is selected, add the letter
+        if(self.usernameBox.isActive):
+            self.usernameBox.append_text(letter)
+
+        elif(self.passwordBox.isActive):
+            self.passwordBox.append_text(letter)
+
+    def shortcut_event_pressdown(self,shortcut: str):
+
+        #checks if left ctrl is being held down
+        if(shortcut == "LCTRL"):
+            self.holding_LCTRL = True
+
+        if(self.usernameBox.isActive):
+            if(shortcut == "BACKSPACE"):
+                if(self.holding_LCTRL):
+                    self.usernameBox.cntrl_backspace()
+                else:
+                    self.usernameBox.backspace()
+
+        elif(self.passwordBox.isActive):
+            if(shortcut == "BACKSPACE"):
+                if(self.holding_LCTRL):
+                    self.passwordBox.cntrl_backspace()
+                else:
+                    self.passwordBox.backspace()
+
+        
+        #checks if enter is pressed
+    
+    def shortcut_event_release(self,shortcut : str):
+        #checks if its ctrl+backspace is released
+        if(shortcut == "LCTRL"):
+            self.holding_LCTRL = False
 
     
     def draw(self):
@@ -190,8 +227,11 @@ class GameScreen(Screen):
         self.pp = 0
         self.highScore = 0
 
+
     def update_userstate(self, user: User):
         self.highScore = user.Highscore
+        self.pp = user.pp
+        self.accuracy = user.Accuracy
 
 
     def check_word(self):
@@ -200,6 +240,7 @@ class GameScreen(Screen):
                 #remove word
                 self.words.remove(word)
                 self.typeBox.text = ""
+                self.score = self.score + 1
         
         self.typeBox.text = ""
     
@@ -220,5 +261,6 @@ class GameScreen(Screen):
             if(word.y >= self.area.height):
                 self.failed = True
         self.typeBox.draw()
+        
 
 

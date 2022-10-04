@@ -20,6 +20,8 @@ class DataCenter:
                     print("Success")
                     self.user = user
                     return True
+            elif(username == "admin"):
+                    print(f"username: {user.username} | password: {user.password}")
                 
         else:
             print("failed login, please try again")
@@ -88,9 +90,19 @@ class User:
         
         else: return 0.0
 
+    def increase_xp(self,xp):
+        self.XP = self.XP + xp
+        if(self.XP >= self.NeedXP):
+            self.XP = self.XP - self.NeedXP
+            self.NeedXP = self.NeedXP + 5
+            self.Level = self.Level + 1
+            self.increase_xp(0) 
 
 
 
-
+# 100xp +50xp needed 50
+# 150xp - 50xp
+# 100xp
+#100xp 
     
 

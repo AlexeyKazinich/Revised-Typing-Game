@@ -1,6 +1,5 @@
 #imports
 import pygame as pg
-import multiprocessing as mp
 import time
 import numpy as np
 import threading
@@ -9,9 +8,9 @@ import math
 #custom class imports
 from screens import *
 from objects import *
-from entities import *
 from userData import *
 from fpsCounter import *
+
 
 pg.init()
 
@@ -21,6 +20,7 @@ window = pg.display.set_mode((500,500))
 pg.display.set_caption('typing game')
 
 
+#REPLACE THIS WITH GAMESTATE
 #keeps track of current game state
 class State:
     def __init__(self):
@@ -196,6 +196,7 @@ class Game:
                     self.gameScreen.failed = False
                     #remove all words
                     self.gameScreen.words = []
+                    self.user.increase_xp(500)
 
             if(self.state.get_state() == "DifficultySelectScreen"):
                 self.difficultySelectScreen.draw()
