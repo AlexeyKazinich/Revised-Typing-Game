@@ -65,7 +65,7 @@ class DataCenter:
 
 #user object itself
 class User:
-    def __init__(self):
+    def __init__(self) -> None:
         self.username = ""
         self.password = ""
         self.Highscore = [0,0,0]
@@ -80,7 +80,7 @@ class User:
 
 
 
-    def get_acc(self):
+    def get_acc(self) -> float:
         num = 0.0
         if(len(self.TopTenAcc) != 0):
             for a in self.TopTenAcc:
@@ -90,7 +90,7 @@ class User:
         
         else: return 0.0
 
-    def increase_xp(self,xp):
+    def increase_xp(self,xp: int) -> None:
         self.XP = self.XP + xp
         if(self.XP >= self.NeedXP):
             self.XP = self.XP - self.NeedXP

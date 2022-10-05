@@ -22,7 +22,7 @@ pg.display.set_caption('typging game')
 clock = pg.time.Clock()
 is_running = True
 class Game_States:
-    def __init__(self):
+    def __init__(self) -> None:
         #state 
         self._state = "LoginScreen" 
         
@@ -35,7 +35,7 @@ class Game_States:
 
         #fps counter
         self.fpscounter = fpsCounter(window)
-    def loginscreen_state(self):
+    def loginscreen_state(self) -> None:
         #events
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -61,7 +61,7 @@ class Game_States:
                     elif event.key == pg.K_BACKSPACE:
                         self._loginscreen.shortcut_event_pressdown("BACKSPACE")
                     else:
-                        self._loginscreen.button_press_event(pg.key.name(event.key))
+                        self._loginscreen.button_press_event(event.unicode)
             
             #checks key releases
             elif event.type == pg.KEYUP:
@@ -74,10 +74,10 @@ class Game_States:
         #drawing everything
         self._loginscreen.draw()
         
-    def mainmenu_state(self):
+    def mainmenu_state(self) -> None:
         pass
 
-    def state_controller(self):
+    def state_controller(self) -> None:
         if(self._state == "LoginScreen"):
             self.loginscreen_state()
         elif(self._state == "MainMenu"):

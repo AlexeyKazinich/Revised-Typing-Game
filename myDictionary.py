@@ -3,7 +3,7 @@ import random
 
 
 class myDictionary:
-    def __init__(self):
+    def __init__(self) -> None:
         self.dictionary = pickle.load(open("SAVE_DATA/Data/MyDictionary.txt","rb"))
         self.easyDictionary = []
         self.mediumDictionary = []
@@ -13,7 +13,7 @@ class myDictionary:
         self.make_difficulty()
 
 
-    def make_difficulty(self):
+    def make_difficulty(self) -> None:
         for word in self.dictionary:
             wordLength = len(word)
             if(wordLength < 5):
@@ -23,7 +23,7 @@ class myDictionary:
             elif(wordLength < 8):
                 self.hardDictionary.append(word)
 
-    def set_difficulty(self, difficult: str):
+    def set_difficulty(self, difficult: str) -> None:
         if(difficult =="easy"):
             self.useDictionary = self.easyDictionary
         elif(difficult =="medium"):
@@ -31,6 +31,6 @@ class myDictionary:
         elif(difficult =="hard"):
             self.useDictionary = self.hardDictionary
 
-    def get_words(self):
+    def get_words(self) -> str:
         length = len(self.useDictionary)
         return(self.useDictionary[random.randint(0, length-1)])
