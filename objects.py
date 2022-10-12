@@ -5,6 +5,7 @@ import time
 import numpy as np
 import threading
 from myDictionary import myDictionary
+from typing import Union
 import random
 #importing custom made classes
 from userData import User
@@ -72,7 +73,7 @@ class ProgressBar:
         self.fillRectangle.draw()
 
 class textBox:
-    def __init__(self,x,y,width,height,window)-> None:
+    def __init__(self,x,y,width,height,window, redact : bool = False)-> None:
 
         self.x = x
         self.y = y
@@ -82,12 +83,14 @@ class textBox:
         self.color = pg.Color(255,255,255)
         self.isActive = False
         self.text = ""
+        self.redacted_text = ""
         self.font = pg.font.Font(None,32)
         self.textColor = pg.Color('lightskyblue3')
         self.__rectangle = Rectangle(self.x,self.y,self.width,self.height,window)
         self.__rectangle.set_color('lightskyblue3')
         self.holdingCtrl = False
         self.focused = False
+        self.redact = redact
 
     def set_active(self)-> None:
         self.color = pg.Color('dodgerblue2')
@@ -113,13 +116,19 @@ class textBox:
     
     def append_text(self,text)-> None:
         self.text += text
+        self.redacted_text += "*"
 
     def backspace(self)-> None:
-        if(len(self.text) != 0):
-            self.text = self.text[:-1]
+        if(not self.redact):
+            if(len(self.text) != 0):
+                self.text = self.text[:-1]
+        else:
+            if(len(self.redacted_text) != 0):
+                self.redacted_text = self.redacted_text[:-1]
 
     def cntrl_backspace(self)-> None:
         self.text = ""
+        self.redacted_text = ""
 
     def __update_width(self)-> None:
         #check if the width of the box is smaller than the width of the text
@@ -130,10 +139,13 @@ class textBox:
 
     def draw(self)-> None:
         #render the text
-        self.textRender = self.font.render(self.text,True,self.textColor)
-
+        if(not self.redact):
+            self.textRender = self.font.render(self.text,True,self.textColor)
+        else:
+            self.textRender = self.font.render(self.redacted_text,True,self.textColor)
         #draw text
-        self.window.blit(self.textRender,(self.x+5,self.y+5)) 
+
+        self.window.blit(self.textRender,(self.x+5,self.y+5))
 
         self.__update_width()
         #draw rectangle
@@ -238,7 +250,6 @@ class Button:
                 self.pressed = False
 
 
-
 class playerInfoBox:
     def __init__(self, user: User,window)-> None:
         self.user = user
@@ -310,3 +321,16 @@ class Word():
 
         #draw the word
         self.window.blit(self.word_surface,(self.x,self.y))
+        
+class Text():
+    def __init__(self,text : str, loc_x : int, loc_y: int, window, font_size : int = 32, color : Union[tuple,str] = 'dodgerblue2') -> None:
+        self.text = text
+        self.loc_x = loc_x
+        self.loc_y = loc_y
+        self.color = color
+        self.window = window
+        self.font = pg.font.Font(None,font_size)
+        self.word_surface = self.font.render(self.text,True,pg.Color(self.color))
+    
+    def draw(self) -> None:
+        self.window.blit(self.word_surface,(self.loc_x,self.loc_y))

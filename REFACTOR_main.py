@@ -28,6 +28,7 @@ class Game_States:
         
         #screens
         self._loginscreen = LoginScreen(window)
+        self._mainmenu = MainMenuScreen(window)
         
         #all data for the user after logging in
         self._user = User()
@@ -48,6 +49,7 @@ class Game_States:
                 print("pressed login")
                 if(self._data_center.login(self._loginscreen.usernameBox.text,self._loginscreen.passwordBox.text)):
                             self._user = self._data_center.user
+                            self._state = "MainMenu"
             
             if(self._loginscreen.signUpButton.get_pressed()):
                 print("pressed signup")
@@ -60,6 +62,8 @@ class Game_States:
                         self._loginscreen.shortcut_event_pressdown("LCTRL")
                     elif event.key == pg.K_BACKSPACE:
                         self._loginscreen.shortcut_event_pressdown("BACKSPACE")
+                    elif event.key == pg.K_TAB:
+                        self._loginscreen.shortcut_event_pressdown("TAB") 
                     else:
                         self._loginscreen.button_press_event(event.unicode)
             
@@ -75,7 +79,17 @@ class Game_States:
         self._loginscreen.draw()
         
     def mainmenu_state(self) -> None:
-        pass
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                is_running = False
+            
+            if self._mainmenu.quitButton.get_pressed():
+                pg.quit()
+                is_running = False
+        
+        #drawing everything
+        self._mainmenu.draw()
 
     def state_controller(self) -> None:
         if(self._state == "LoginScreen"):

@@ -37,7 +37,7 @@ class LoginScreen(Screen):
         self.usernameBox = textBox(100,100,140,32,self.window)
         self.usernameBox.set_color(self.inactiveColor)
 
-        self.passwordBox = textBox(100,164,140,32,self.window)
+        self.passwordBox = textBox(100,164,140,32,self.window, True)
         self.passwordBox.set_color(self.inactiveColor)
 
         self.rectangles.append(self.usernameBox)
@@ -112,12 +112,17 @@ class LoginScreen(Screen):
         if(shortcut == "LCTRL"):
             self.holding_LCTRL = True
 
+
         if(self.usernameBox.isActive):
             if(shortcut == "BACKSPACE"):
                 if(self.holding_LCTRL):
                     self.usernameBox.cntrl_backspace()
                 else:
                     self.usernameBox.backspace()
+                    
+            elif(shortcut == "TAB"):
+                self.usernameBox.set_deactive()
+                self.passwordBox.set_active()
 
         elif(self.passwordBox.isActive):
             if(shortcut == "BACKSPACE"):
@@ -126,6 +131,8 @@ class LoginScreen(Screen):
                 else:
                     self.passwordBox.backspace()
 
+            elif(shortcut == "TAB"):
+                self.passwordBox.set_deactive()
         
         #checks if enter is pressed
     
