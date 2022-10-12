@@ -29,7 +29,7 @@ class Game_States:
         #screens
         self._loginscreen = LoginScreen(window)
         self._mainmenu = MainMenuScreen(window)
-        
+        self._difficultySelectScreen = DifficultySelectScreen(window)
         #all data for the user after logging in
         self._user = User()
         self._data_center = DataCenter()
@@ -87,16 +87,32 @@ class Game_States:
             if self._mainmenu.quitButton.get_pressed():
                 pg.quit()
                 is_running = False
-        
+            elif self._mainmenu.logoutButton.get_pressed():
+                self._state = "LoginScreen"
+            elif self._mainmenu.startGameButton.get_pressed():
+                self._state = "DifficultySelectScreen"
         #drawing everything
         self._mainmenu.draw()
+    
+    def difficultyscreen_state(self) -> None:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                is_running = False
 
+            if self._difficultySelectScreen.backButton.get_pressed():
+                self._state = "MainMenu"
+        #drawing everything
+        self._difficultySelectScreen.draw()
+    
     def state_controller(self) -> None:
         if(self._state == "LoginScreen"):
             self.loginscreen_state()
         elif(self._state == "MainMenu"):
             self.mainmenu_state()
-
+        elif(self._state == "DifficultySelectScreen"):
+            self.difficultyscreen_state()
+        
         self.fpscounter.draw()
         pg.display.flip()
         self.fpscounter.count_fps()
