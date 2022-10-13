@@ -79,7 +79,12 @@ class User:
         self.TopTenDifficulty = []
 
 
-
+    def get_top_ten_wpm(self) -> float:
+        num = 0.0
+        if (len(self.TopTenWPM) != 0):
+            return sum(self.TopTenWPM) / len(self.TopTenWPM)
+        return num
+    
     def get_acc(self) -> float:
         num = 0.0
         if(len(self.TopTenAcc) != 0):

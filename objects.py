@@ -65,7 +65,6 @@ class ProgressBar:
             self.fillRectangle.width = int((progress / totalProgress)*self.backgroundRectangle.width)
         except ZeroDivisionError:
             print("ZeroDivisionError")
-        print(self.progress)
 
 
     def draw(self)-> None:
@@ -262,15 +261,18 @@ class playerInfoBox:
         self.color_RareScore = 'ROYALBLUE'
         self.font = pg.font.Font(None,32)
 
-        #user info
-        self.userbox_performance = str(self.user.Performance)+ "pp"
-        self.userbox_performance_color = self.color_UncommonScore
-        self.userbox_name = self.user.username
-        self.userbox_level = ("Lvl: "+ str(self.user.Level))
-        self.userbox_accuracy = str(self.user.get_acc()) + "%"
-        self.userbox_playerWPM = str(self.user.TopTenWPM) + "WPM"
-
+        #rectangle for the userbox
         self.add_objects()
+        
+        #things inside the userbox
+        self.userbox_performance = Text(f"{self.user.Performance}pp",self.userbox.x + 10,0,window,32,"azure3")
+        self.userbox_performance_color = self.color_UncommonScore
+        self.userbox_name = Text(f"?{self.user.username}?",self.userbox.x + 10,self.userbox.y + self.userbox.height - 15,window,32,"azure3")
+        self.userbox_level = Text(f"Lvl: {self.user.Level}",self.userbox.x+self.userbox.width,self.userbox.y+self.userbox.height-35,window)
+        self.userbox_accuracy = Text(f"{self.user.get_acc()}%",self.userbox.x+self.userbox.width,self.userbox.y+2,window)
+        self.userbox_playerWPM = Text(f"{self.user.get_top_ten_wpm()}WPM",100,50,window)
+
+        
 
         #level bar
         self.level_bar = ProgressBar(self.userbox.x + self.userbox.width - 100,(self.userbox.y+self.userbox.height-11),100,10,'DARKGRAY','LIMEGREEN',self.window)
@@ -286,22 +288,21 @@ class playerInfoBox:
 
 
     def draw(self)-> None:
-        #render
-        userbox_level_surface = self.font.render(self.userbox_level,True,pg.Color(self.color_active))
-        userbox_name_surface = self.font.render(self.userbox_name,True,pg.Color(self.color_active))
-        userbox_accuracy_surface = self.font.render(self.userbox_accuracy,True,pg.Color(self.color_active))
-        userbox_playerWPM_surface = self.font.render(self.userbox_playerWPM,True,pg.Color(self.color_active))
 
-        #draw
-        self.level_bar.draw()
+        #draw outline of box
         self.userbox.draw_box()
+        
+        #draw things inside the box
+        self.level_bar.draw()
+        self.userbox_performance.draw()
+        self.userbox_name.draw()
+        self.userbox_level.draw()
+        self.userbox_accuracy.draw()
+        self.userbox_playerWPM.draw()
 
-        #drawing all the user specific things
-        self.window.blit(userbox_level_surface,(self.userbox.x+self.userbox.width-int(userbox_level_surface.get_width())-2,self.userbox.y+self.userbox.height-35))
 
-        self.window.blit(userbox_name_surface,(self.userbox.x+2,self.userbox.y+self.userbox.height-25))
 
-        self.window.blit(userbox_accuracy_surface,(self.userbox.x+self.userbox.width-int(userbox_accuracy_surface.get_width())-2,self.userbox.y+2))
+        #self.window.blit(userbox_accuracy_surface,(self.userbox.x+self.userbox.width-int(userbox_accuracy_surface.get_width())-2,self.userbox.y+2))
 
 class Word():
     def __init__(self,dictionary: myDictionary,window, y : int)-> None:

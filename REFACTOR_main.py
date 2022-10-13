@@ -79,6 +79,7 @@ class Game_States:
         self._loginscreen.draw()
         
     def mainmenu_state(self) -> None:
+        self._mainmenu.update_user(self._user)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()
@@ -89,6 +90,7 @@ class Game_States:
                 is_running = False
             elif self._mainmenu.logoutButton.get_pressed():
                 self._state = "LoginScreen"
+                
             elif self._mainmenu.startGameButton.get_pressed():
                 self._state = "DifficultySelectScreen"
         #drawing everything
@@ -102,6 +104,9 @@ class Game_States:
 
             if self._difficultySelectScreen.backButton.get_pressed():
                 self._state = "MainMenu"
+            elif self._difficultySelectScreen.easyButton.get_pressed():
+                pass
+                #FINISH
         #drawing everything
         self._difficultySelectScreen.draw()
     
