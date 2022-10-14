@@ -46,7 +46,7 @@ class ProgressBar:
         
         #rectangles
         self.backgroundRectangle = Rectangle(x,y,width,height,window)
-        self.fillRectangle = Rectangle(x,y,0,height,window)
+        self.fillRectangle = Rectangle(x,y+1,0,height-2,window)
 
         #colors
         self.backgroundColor = backgroundColor
@@ -182,6 +182,7 @@ class Button:
         #mouse events
         self.pressed = False
         self.confirmed = False
+        self.hover = False
 
 
     #checks if the button was pressed, sets the value to false to prevent the button from staying pressed
@@ -231,22 +232,26 @@ class Button:
         #draw the text
         self.window.blit(self.textRender,(self.x+5,self.y+5))
 
+        #check if hovering or clicking the button
         self.check_click()
     
     def check_click(self)-> None:
-        mouse_pos = pg.mouse.get_pos()
+        mouse_pos = pg.mouse.get_pos() #mouse pos
+        #if hovering
         if self.__rectangle.collidepoint(mouse_pos):
+            self.hover = True
+            self.set_hover()
+        else: 
+            self.hover = False
+            self.set_deactive()
+            
+        #if clicking while hovering
+        if(self.hover):
             if(pg.mouse.get_pressed()[0]):
                 self.set_active()
                 self.pressed = True
-            else:
-                self.pressed = False
-                self.set_deactive()
-        
-        else:
-            if(pg.mouse.get_pressed()[0] != True):
-                self.set_deactive()
-                self.pressed = False
+            else: self.pressed = False
+    
 
 
 class playerInfoBox:
@@ -259,6 +264,9 @@ class playerInfoBox:
         self.color_UncommonScore = 'LIMEGREEN'
         self.color_CommonScore = 'DARKGRAY'
         self.color_RareScore = 'ROYALBLUE'
+        self.color_EpicScore = 'DARKVIOLET'
+        self.color_LegendaryScore = 'DARKORANGE'
+        self.color_level ='darkgoldenrod'
         self.font = pg.font.Font(None,32)
 
         #rectangle for the userbox
@@ -267,10 +275,10 @@ class playerInfoBox:
         #things inside the userbox
         self.userbox_performance = Text(f"{self.user.Performance}pp",self.userbox.x + 10,0,window,32,"azure3")
         self.userbox_performance_color = self.color_UncommonScore
-        self.userbox_name = Text(f"?{self.user.username}?",self.userbox.x + 10,self.userbox.y + self.userbox.height - 15,window,32,"azure3")
-        self.userbox_level = Text(f"Lvl: {self.user.Level}",self.userbox.x+self.userbox.width,self.userbox.y+self.userbox.height-35,window)
-        self.userbox_accuracy = Text(f"{self.user.get_acc()}%",self.userbox.x+self.userbox.width,self.userbox.y+2,window)
-        self.userbox_playerWPM = Text(f"{self.user.get_top_ten_wpm()}WPM",100,50,window)
+        self.userbox_name = Text(f"{self.user.username}",self.userbox.x,self.userbox.y + self.userbox.height,window,32,subtract_height = True)
+        self.userbox_level = Text(f"Lvl: {self.user.Level}",self.userbox.x+self.userbox.width,self.userbox.y+self.userbox.height-35,window,subtract_width = True, color = self.color_level)
+        self.userbox_accuracy = Text(f"{self.user.get_acc()}%",self.userbox.x+self.userbox.width,self.userbox.y+2,window,subtract_width = True)
+        self.userbox_playerWPM = Text(f"{self.user.get_top_ten_wpm()}WPM",self.userbox.x+(self.userbox.width/3),self.userbox.height,window,subtract_height = True)
 
         
 
@@ -324,14 +332,20 @@ class Word():
         self.window.blit(self.word_surface,(self.x,self.y))
         
 class Text():
-    def __init__(self,text : str, loc_x : int, loc_y: int, window, font_size : int = 32, color : Union[tuple,str] = 'dodgerblue2') -> None:
+    def __init__(self,text : str, loc_x : int, loc_y: int, window, font_size : int = 32, color : Union[tuple,str] = 'dodgerblue2',subtract_width : bool = False, subtract_height: bool = False) -> None:
         self.text = text
-        self.loc_x = loc_x
-        self.loc_y = loc_y
         self.color = color
         self.window = window
+        self.loc_x = loc_x
+        self.loc_y = loc_y
         self.font = pg.font.Font(None,font_size)
         self.word_surface = self.font.render(self.text,True,pg.Color(self.color))
+        
+        if(subtract_width):
+            self.loc_x -= self.word_surface.get_width()
+        if(subtract_height):
+            self.loc_y -= self.word_surface.get_height()
+
     
     def draw(self) -> None:
         self.window.blit(self.word_surface,(self.loc_x,self.loc_y))
