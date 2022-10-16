@@ -2,7 +2,7 @@ import pickle
 import random
 
 
-class myDictionary:
+class MyDictionary:
     def __init__(self) -> None:
         self.dictionary = pickle.load(open("SAVE_DATA/Data/MyDictionary.txt","rb"))
         self.easyDictionary = []

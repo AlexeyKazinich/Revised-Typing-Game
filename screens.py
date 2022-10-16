@@ -6,7 +6,7 @@ import numpy as np
 import threading
 from typing import Union
 #module import
-from myDictionary import myDictionary
+from myDictionary import MyDictionary
 from objects import *
 from userData import *
 
@@ -34,10 +34,10 @@ class LoginScreen(Screen):
     def add_objects(self)-> None:
 
         #text boxes
-        self.usernameBox = textBox(100,100,140,32,self.window)
+        self.usernameBox = TextBox(100,100,140,32,self.window)
         self.usernameBox.set_color(self.inactiveColor)
 
-        self.passwordBox = textBox(100,164,140,32,self.window, True)
+        self.passwordBox = TextBox(100,164,140,32,self.window, True)
         self.passwordBox.set_color(self.inactiveColor)
 
         self.rectangles.append(self.usernameBox)
@@ -164,7 +164,7 @@ class MainMenuScreen(Screen):
         self.buttons = []
         self.add_buttons()
         self.user = User()
-        self.userInfo = playerInfoBox(self.user,self.window)
+        self.userInfo = PlayerInfoBox(self.user,self.window)
 
     def add_buttons(self)-> None:
         self.startGameButton = Button(int(self.area.width/2)-75,int(self.area.height/6),150,32,"Start Game",self.window)
@@ -180,7 +180,7 @@ class MainMenuScreen(Screen):
     
     def update_user(self,newuser : User)-> None:
         self.user = newuser
-        self.userInfo = playerInfoBox(self.user,self.window)
+        self.userInfo = PlayerInfoBox(self.user,self.window)
     
     def draw(self)-> None:
 
@@ -222,13 +222,13 @@ class GameScreen(Screen):
     
     def __init__(self,window)-> None:
         super().__init__(window)
-        self.dictionary = myDictionary()
+        self.dictionary = MyDictionary()
         self.words = []
         self.moveSpeed = 1
         self.window = window
         self.area = self.window.get_rect()
         self.failed = False
-        self.typeBox = textBox(int(self.area.width/2-100),int(self.area.height-50),80,30,self.window)
+        self.typeBox = TextBox(int(self.area.width/2-100),int(self.area.height-50),80,30,self.window)
 
         self.accuracy = [0,0,0] #hit #miss #total
         self.score = 0

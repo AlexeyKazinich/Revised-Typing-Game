@@ -4,7 +4,7 @@ import multiprocessing as mp
 import time
 import numpy as np
 import threading
-from myDictionary import myDictionary
+from myDictionary import MyDictionary
 from typing import Union
 import random
 #importing custom made classes
@@ -71,7 +71,7 @@ class ProgressBar:
         self.backgroundRectangle.draw()
         self.fillRectangle.draw()
 
-class textBox:
+class TextBox:
     def __init__(self,x,y,width,height,window, redact : bool = False)-> None:
 
         self.x = x
@@ -254,7 +254,7 @@ class Button:
     
 
 
-class playerInfoBox:
+class PlayerInfoBox:
     def __init__(self, user: User,window)-> None:
         self.user = user
         self.window = window
@@ -313,7 +313,7 @@ class playerInfoBox:
         #self.window.blit(userbox_accuracy_surface,(self.userbox.x+self.userbox.width-int(userbox_accuracy_surface.get_width())-2,self.userbox.y+2))
 
 class Word():
-    def __init__(self,dictionary: myDictionary,window, y : int)-> None:
+    def __init__(self,dictionary: MyDictionary,window, y : int)-> None:
         self.word = ""
         self.font = pg.font.Font(None,32)
         self.color_active = 'dodgerblue2'

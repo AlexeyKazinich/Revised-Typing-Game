@@ -1,7 +1,7 @@
 import pygame as pg
 from objects import *
 from typing import Union
-class object_manager():
+class ObjectManager():
     
     
     def __init__(self,window):
@@ -10,7 +10,7 @@ class object_manager():
         #allow to add or remove objects from the object manager
         self._window = window
         
-    def add_object(self, object: Union[Rectangle,ProgressBar,textBox, Button, playerInfoBox, Word, Text]) -> None:
+    def add_object(self, object: Union[Rectangle,ProgressBar,TextBox, Button, PlayerInfoBox, Word, Text]) -> None:
         pass
     
     def remove_object(self, index : int) -> None:

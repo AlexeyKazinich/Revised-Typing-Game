@@ -6,7 +6,7 @@ import threading
 import math
 
 
-class fpsCounter:
+class FPSCounter:
     def __init__(self,window)-> None:
         self.cSec = 0
         self.cFrame = 0

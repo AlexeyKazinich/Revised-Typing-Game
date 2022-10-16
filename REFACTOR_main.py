@@ -30,12 +30,13 @@ class Game_States:
         self._loginscreen = LoginScreen(window)
         self._mainmenu = MainMenuScreen(window)
         self._difficultySelectScreen = DifficultySelectScreen(window)
+        self._gameScreen = GameScreen(window)
         #all data for the user after logging in
         self._user = User()
         self._data_center = DataCenter()
 
         #fps counter
-        self.fpscounter = fpsCounter(window)
+        self.fpscounter = FPSCounter(window)
     def loginscreen_state(self) -> None:
         #events
         for event in pg.event.get():
@@ -105,22 +106,50 @@ class Game_States:
             if self._difficultySelectScreen.backButton.get_pressed():
                 self._state = "MainMenu"
             elif self._difficultySelectScreen.easyButton.get_pressed():
+                self._gameScreen = GameScreen(window) #new instance
+                self._gameScreen.dictionary = MyDictionary()
+                self._gameScreen.dictionary.set_difficulty("easy")
+                self._state = "GameScreen"
+            elif self._difficultySelectScreen.mediumButton.get_pressed():
                 pass
-                #FINISH
+            elif self._difficultySelectScreen.hardButton.get_pressed():
+                pass
         #drawing everything
         self._difficultySelectScreen.draw()
-    
+        
+        
+    def gamescreen_state(self) -> None:
+        #event loop
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                is_running = False
+                
+        #check if the user failed        
+        if self._gameScreen.failed:
+            self._state = "DifficultySelectScreen"
+        #draw
+        self._gameScreen.draw()
+        
+        
     def state_controller(self) -> None:
+        #draw the state that the game is currently in
         if(self._state == "LoginScreen"):
             self.loginscreen_state()
+            
         elif(self._state == "MainMenu"):
             self.mainmenu_state()
+            
         elif(self._state == "DifficultySelectScreen"):
             self.difficultyscreen_state()
+            
+        elif(self._state == "GameScreen"):
+            self.gamescreen_state()
         
+        #draw the fps counter    
         self.fpscounter.draw()
         pg.display.flip()
-        self.fpscounter.count_fps()
+        self.fpscounter.count_fps() #count fps
 
 
 game_state = Game_States()

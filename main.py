@@ -40,7 +40,7 @@ class Game:
         self.state = State()
         
         #fps
-        self.fpscounter = fpsCounter(window)
+        self.fpscounter = FPSCounter(window)
 
         #User info
         self.dataCenter = DataCenter()
@@ -157,17 +157,17 @@ class Game:
                         self.state.change_state("MainMenu")
                     
                     elif(self.difficultySelectScreen.easyButton.get_pressed()):
-                        self.gameScreen.dictionary = myDictionary()
+                        self.gameScreen.dictionary = MyDictionary()
                         self.gameScreen.dictionary.set_difficulty("easy")
                         self.state.change_state("GameScreen")
                     
                     elif(self.difficultySelectScreen.mediumButton.get_pressed()):
-                        self.gameScreen.dictionary = myDictionary()
+                        self.gameScreen.dictionary = MyDictionary()
                         self.gameScreen.dictionary.set_difficulty("medium")
                         self.state.change_state("GameScreen")
                     
                     elif(self.difficultySelectScreen.hardButton.get_pressed()):
-                        self.gameScreen.dictionary = myDictionary()
+                        self.gameScreen.dictionary = MyDictionary()
                         self.gameScreen.dictionary.set_difficulty("hard")
                         self.state.change_state("GameScreen")
 
