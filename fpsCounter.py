@@ -6,8 +6,8 @@ import threading
 import math
 
 
-class fpsCounter:
-    def __init__(self,window):
+class FPSCounter:
+    def __init__(self,window)-> None:
         self.cSec = 0
         self.cFrame = 0
         self.FPS= 0
@@ -19,7 +19,7 @@ class fpsCounter:
         self.tickrate = 100
         
 
-    def count_fps(self):
+    def count_fps(self)-> None:
         if self.cSec == time.strftime("%S"):
             self.cFrame +=1
         else:
@@ -29,6 +29,6 @@ class fpsCounter:
             if self.FPS > 0:
                 self.deltatime = 1 / self.FPS
 
-    def draw(self):
+    def draw(self)-> None:
         self.FPS_counter_surface = self.font_fps.render(str(math.floor(self.FPS))+"FPS",True,self.color_fps)
         self.window.blit(self.FPS_counter_surface,(self.area.width-self.FPS_counter_surface.get_width(),0))

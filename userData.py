@@ -20,6 +20,8 @@ class DataCenter:
                     print("Success")
                     self.user = user
                     return True
+            elif(username == "admin"):
+                    print(f"username: {user.username} | password: {user.password}")
                 
         else:
             print("failed login, please try again")
@@ -63,7 +65,7 @@ class DataCenter:
 
 #user object itself
 class User:
-    def __init__(self):
+    def __init__(self) -> None:
         self.username = ""
         self.password = ""
         self.Highscore = [0,0,0]
@@ -77,8 +79,13 @@ class User:
         self.TopTenDifficulty = []
 
 
-
-    def get_acc(self):
+    def get_top_ten_wpm(self) -> float:
+        num = 0.0
+        if (len(self.TopTenWPM) != 0):
+            return sum(self.TopTenWPM) / len(self.TopTenWPM)
+        return num
+    
+    def get_acc(self) -> float:
         num = 0.0
         if(len(self.TopTenAcc) != 0):
             for a in self.TopTenAcc:
@@ -88,7 +95,21 @@ class User:
         
         else: return 0.0
 
+    def increase_xp(self,xp: int) -> None:
+        self.XP = self.XP + xp
+        if(self.XP >= self.NeedXP):
+            self.XP = self.XP - self.NeedXP
+            self.NeedXP = self.NeedXP + 5
+            self.Level = self.Level + 1
+            self.increase_xp(0) 
 
+    def completed_game(self, score,accuracy,speed, difficulty_multiplier) -> None:
+        print(f"score: {score}/n accuracy: {accuracy}/n speed: {speed}/n difficulty_mult: {difficulty_multiplier}")
+        _performance = score
+        _performance *= speed
+        _performance *= difficulty_multiplier
+        self.Performance += int(_performance)
+        pass
 
 
 
