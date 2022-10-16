@@ -41,6 +41,7 @@ class Game_States:
         #events
         for event in pg.event.get():
             if event.type == pg.QUIT:
+                self._data_center.save_to_file()
                 pg.quit()
                 is_running = False
 
@@ -83,10 +84,12 @@ class Game_States:
         self._mainmenu.update_user(self._user)
         for event in pg.event.get():
             if event.type == pg.QUIT:
+                self._data_center.save_to_file()
                 pg.quit()
                 is_running = False
             
             if self._mainmenu.quitButton.get_pressed():
+                self._data_center.save_to_file()
                 pg.quit()
                 is_running = False
             elif self._mainmenu.logoutButton.get_pressed():
@@ -100,15 +103,16 @@ class Game_States:
     def difficultyscreen_state(self) -> None:
         for event in pg.event.get():
             if event.type == pg.QUIT:
+                self._data_center.save_to_file()
                 pg.quit()
                 is_running = False
 
             if self._difficultySelectScreen.backButton.get_pressed():
                 self._state = "MainMenu"
             elif self._difficultySelectScreen.easyButton.get_pressed():
-                self._gameScreen = GameScreen(window) #new instance
-                self._gameScreen.dictionary = MyDictionary()
-                self._gameScreen.dictionary.set_difficulty("easy")
+                self._gameScreen = GameScreen(window, self._user) #new instance
+                #self._gameScreen.dictionary = MyDictionary()
+                self._gameScreen.set_difficulty("easy")
                 self._state = "GameScreen"
             elif self._difficultySelectScreen.mediumButton.get_pressed():
                 pass
@@ -124,6 +128,16 @@ class Game_States:
             if event.type == pg.QUIT:
                 pg.quit()
                 is_running = False
+            
+            #check for players inputs
+            if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_SPACE:
+                        self._gameScreen.shortcut_event_pressdown("SPACE")
+                    elif event.key == pg.K_BACKSPACE:
+                        self._gameScreen.shortcut_event_pressdown("BACKSPACE")
+                    else:
+                        self._gameScreen.button_press_event(event.unicode)
+
                 
         #check if the user failed        
         if self._gameScreen.failed:

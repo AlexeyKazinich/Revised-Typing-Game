@@ -103,11 +103,15 @@ class User:
             self.Level = self.Level + 1
             self.increase_xp(0) 
 
+    def completed_game(self, score,accuracy,speed, difficulty_multiplier) -> None:
+        print(f"score: {score}/n accuracy: {accuracy}/n speed: {speed}/n difficulty_mult: {difficulty_multiplier}")
+        _performance = score
+        _performance *= speed
+        _performance *= difficulty_multiplier
+        self.Performance += int(_performance)
+        pass
 
 
-# 100xp +50xp needed 50
-# 150xp - 50xp
-# 100xp
-#100xp 
+
     
 

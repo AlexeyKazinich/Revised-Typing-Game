@@ -346,6 +346,9 @@ class Text():
         if(subtract_height):
             self.loc_y -= self.word_surface.get_height()
 
+    def update_text(self,text :str) -> None:
+        self.text = text
+        self.word_surface = self.font.render(self.text,True,pg.Color(self.color))
     
     def draw(self) -> None:
         self.window.blit(self.word_surface,(self.loc_x,self.loc_y))

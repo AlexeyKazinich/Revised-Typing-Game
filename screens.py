@@ -220,39 +220,80 @@ class DifficultySelectScreen(Screen):
         
 class GameScreen(Screen):
     
-    def __init__(self,window)-> None:
+    def __init__(self,window, user : User = None)-> None:
         super().__init__(window)
         self.dictionary = MyDictionary()
         self.words = []
-        self.moveSpeed = 1
         self.window = window
         self.area = self.window.get_rect()
         self.failed = False
         self.typeBox = TextBox(int(self.area.width/2-100),int(self.area.height-50),80,30,self.window)
+        self.typeBox.set_active()
+        
+        self.user = user
 
-        self.accuracy = [0,0,0] #hit #miss #total
-        self.score = 0
-        self.pp = 0
-        self.highScore = 0
+        self.moveSpeed = 1 #speed for word movement
+        self.speed = 1 #speed for score calculation
+        self.accuracy = [0,0,100.0] #hit #miss #acc
+        self.score = 10 #current player score
+        self.current_performance = 0 #shows the pp on screen
+        self.difficulty_mult = 0.0 
 
+        #onscreen text
+        self._accuracy_text = Text(f"{self.accuracy[2]}%",0,0,window)
 
-    def update_userstate(self, user: User)-> None:
-        self.highScore = user.Highscore
-        self.pp = user.pp
-        self.accuracy = user.Accuracy
+    def set_difficulty(self, difficulty : str):
+        self.dictionary.set_difficulty(difficulty)
+        self.difficulty_mult = self.dictionary.get_difficulty_float()
 
-
+    #function runs whenever space is pressed or backspace
+    def _calculate_acc(self):
+        #update the accuracy
+        try: 
+            self.accuracy[2] = round((self.accuracy[0] / (self.accuracy[0] + self.accuracy[1])) * 100,2)
+        except:
+            self.accuracy[2] = 100.0
+            
+        #update the accuracy text
+        self._accuracy_text.update_text(f"{self.accuracy[2]}%")
+    
+    #runs when the game ends
+    #this function saves everything to the user
+    def _failed(self):
+        _xp_earned = self.score * self.accuracy[2] *450
+        self.user.increase_xp(_xp_earned)
+        self.user.completed_game(self.score,self.accuracy[2],self.speed,self.difficulty_mult)
+        self.failed = True
+    
+    #function runs if the word was written wrong
+    def _correct_input(self,word : Word):
+        self.score = self.score + 1
+        self.accuracy[0] += len(word.word) #adds to the correct index
+        
+        self._calculate_acc()
+        
+    #function runs if the word was written correctly
+    def _incorrect_input(self, word : Word):
+        self.accuracy[1] += len(word.word) #adds to the miss index
+        self._calculate_acc()
+        
+    #function runs when space is clicking
     def check_word(self)-> None:
+        _is_correct = False
         for word in self.words:
             if(self.typeBox.text == word.word):
                 #remove word
                 self.words.remove(word)
                 self.typeBox.text = ""
-                self.score = self.score + 1
+                self._correct_input(word)
+                _is_correct = True
         
+        if(not _is_correct):
+            self._incorrect_input(word)
+            
         self.typeBox.text = ""
     
-
+    
     
     def draw(self)-> None:
         if(len(self.words) < 4):
@@ -267,8 +308,24 @@ class GameScreen(Screen):
             
         for word in self.words:
             if(word.y >= self.area.height):
-                self.failed = True
-        self.typeBox.draw()
+                self._failed()
+        self.typeBox.draw() #draw textbox
         
+        self._accuracy_text.draw() #draw the accuracy text
+        
+        
+    def button_press_event(self,letter: Union[str,int]) -> None:
 
+        #check what textbox is selected, add the letter
+            self.typeBox.append_text(letter)
+
+    def shortcut_event_pressdown(self,shortcut: str)-> None:
+
+        #checks if left ctrl is being held down
+        if(shortcut == "SPACE"):
+            self.check_word()
+        elif(shortcut == "BACKSPACE"):
+            self.typeBox.backspace()
+            self.accuracy[1] += 1
+            self._calculate_acc()
 
