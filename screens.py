@@ -1,9 +1,7 @@
 from cgitb import text
 import pygame as pg
 import multiprocessing as mp
-import time
 import numpy as np
-import threading
 from typing import Union
 #module import
 from myDictionary import MyDictionary
@@ -78,14 +76,6 @@ class LoginScreen(Screen):
             self.__allUsers = pickle.load(open("SAVE_DATA/Game_Data/Users.txt","rb"))
         except FileNotFoundError:
             self.__write_to_file()
-    
-    def sign_up(self) -> User:
-        self.user.Signup(self.usernameBox.text,self.passwordBox.text)
-        self.__allUsers.append(self.user)
-        return self.user
-
-    def login(self)-> None:
-        pass
 
     def login_attempt(self) -> bool:
         for user in self.__allUsers:
@@ -220,7 +210,7 @@ class DifficultySelectScreen(Screen):
         
 class GameScreen(Screen):
     
-    def __init__(self,window, user : User = None)-> None:
+    def __init__(self,window, user : User = User(),difficulty: str = "easy")-> None:
         super().__init__(window)
         self.dictionary = MyDictionary()
         self.words = []
@@ -237,7 +227,9 @@ class GameScreen(Screen):
         self.accuracy = [0,0,100.0] #hit #miss #acc
         self.score = 10 #current player score
         self.current_performance = 0 #shows the pp on screen
-        self.difficulty_mult = 0.0 
+        self.difficulty_mult = 0.0
+        
+        self.set_difficulty(difficulty)
 
         #onscreen text
         self._accuracy_text = Text(f"{self.accuracy[2]}%",0,0,window)
@@ -273,8 +265,8 @@ class GameScreen(Screen):
         self._calculate_acc()
         
     #function runs if the word was written correctly
-    def _incorrect_input(self, word : Word):
-        self.accuracy[1] += len(word.word) #adds to the miss index
+    def _incorrect_input(self):
+        self.accuracy[1] += len(self.typeBox.text) #adds to the miss index
         self._calculate_acc()
         
     #function runs when space is clicking
@@ -289,7 +281,7 @@ class GameScreen(Screen):
                 _is_correct = True
         
         if(not _is_correct):
-            self._incorrect_input(word)
+            self._incorrect_input()
             
         self.typeBox.text = ""
     

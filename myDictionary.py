@@ -38,7 +38,7 @@ class MyDictionary:
         elif(difficult =="medium"):
             self.useDictionary = self.mediumDictionary
             self._difficulty = "medium"
-            self._difficulty_float = 2.0
+            self._difficulty_float = 2.27
         elif(difficult =="hard"):
             self.useDictionary = self.hardDictionary
             self._difficulty_float = 4.0

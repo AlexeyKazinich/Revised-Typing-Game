@@ -1,9 +1,6 @@
 # imports
 import pygame as pg
-import time
 import numpy as np
-import threading
-import math
 
 #custom class imports
 from screens import *
@@ -110,9 +107,7 @@ class Game_States:
             if self._difficultySelectScreen.backButton.get_pressed():
                 self._state = "MainMenu"
             elif self._difficultySelectScreen.easyButton.get_pressed():
-                self._gameScreen = GameScreen(window, self._user) #new instance
-                #self._gameScreen.dictionary = MyDictionary()
-                self._gameScreen.set_difficulty("easy")
+                self._gameScreen = GameScreen(window, self._user,"easy") #new instance
                 self._state = "GameScreen"
             elif self._difficultySelectScreen.mediumButton.get_pressed():
                 pass

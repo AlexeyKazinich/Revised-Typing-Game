@@ -1,4 +1,7 @@
-[ ] game screen show pp, score, accuracy
+[ ] game screen show:
+    [ ] show PP
+    [ ] show Score
+    [√] show Accuracy
 [ ] game screen do the correct calculations
 [ ] add everything that needs to be added to the user after game ends
 [√] add typing in the game screen
@@ -7,4 +10,4 @@
 
 [ ] create a leaderboard window
 [ ] fix issue when going from one screen to the next there is a chance of clicking a button
-[ ] set the correct difficulty multiplier
+[√] set the correct difficulty multiplier

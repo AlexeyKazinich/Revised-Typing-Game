@@ -91,7 +91,7 @@ class User:
             for a in self.TopTenAcc:
                 num += a
 
-            return num / (self.TopTenAcc)
+            return num / (len(self.TopTenAcc))
         
         else: return 0.0
 
