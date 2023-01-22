@@ -153,8 +153,8 @@ class MainMenuScreen(Screen):
         self.area = window.get_rect()
         self.buttons = []
         self.add_buttons()
-        self.user = User()
-        self.userInfo = PlayerInfoBox(self.user,self.window)
+        self.data_center = DataCenter.get_instance()
+        self.userInfo = PlayerInfoBox(self.data_center.user,self.window) #type: ignore
 
     def add_buttons(self)-> None:
         self.startGameButton = Button(int(self.area.width/2)-75,int(self.area.height/6),150,32,"Start Game",self.window)
@@ -168,12 +168,11 @@ class MainMenuScreen(Screen):
         self.buttons.append(self.quitButton)
         self.buttons.append(self.logoutButton)
     
-    def update_user(self,newuser : User)-> None:
-        self.user = newuser
-        self.userInfo = PlayerInfoBox(self.user,self.window)
+    def update_user(self)-> None:
+        self.userInfo = PlayerInfoBox(self.data_center.user,self.window) #type: ignore
     
     def draw(self)-> None:
-
+        self.update_user()
         self.window.fill((30,30,30))
 
         self.userInfo.draw()
@@ -210,7 +209,7 @@ class DifficultySelectScreen(Screen):
         
 class GameScreen(Screen):
     
-    def __init__(self,window, user : User = User(),difficulty: str = "easy")-> None:
+    def __init__(self,window,difficulty: str = "easy")-> None:
         super().__init__(window)
         self.dictionary = MyDictionary()
         self.words = []
@@ -220,7 +219,7 @@ class GameScreen(Screen):
         self.typeBox = TextBox(int(self.area.width/2-100),int(self.area.height-50),80,30,self.window)
         self.typeBox.set_active()
         
-        self.user = user
+        self.data_center = DataCenter.get_instance()
 
         self.moveSpeed = 1 #speed for word movement
         self.speed = 1 #speed for score calculation
@@ -253,8 +252,8 @@ class GameScreen(Screen):
     #this function saves everything to the user
     def _failed(self):
         _xp_earned = self.score * self.accuracy[2] *450
-        self.user.increase_xp(_xp_earned)
-        self.user.completed_game(self.score,self.accuracy[2],self.speed,self.difficulty_mult)
+        self.data_center.user.increase_xp(_xp_earned) #type: ignore
+        self.data_center.user.completed_game(self.score,self.accuracy[2],self.speed,self.difficulty_mult) #type: ignore
         self.failed = True
     
     #function runs if the word was written wrong

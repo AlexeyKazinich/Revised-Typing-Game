@@ -191,7 +191,6 @@ class Button:
         self.pressed = False
         return temp
         
-
     def set_active(self)-> None:
         self.color = pg.Color('dodgerblue2')
         self.textColor = pg.Color('dodgerblue2')
@@ -217,9 +216,6 @@ class Button:
             return True
         else:
             return False
-
-    
-
 
     def draw(self)-> None:
 

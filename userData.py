@@ -7,11 +7,25 @@ import pickle
 
 
 class DataCenter:
+    __instance = None
+    
+    @staticmethod
+    def get_instance():
+        if(DataCenter.__instance == None):
+            DataCenter()
+        return DataCenter.__instance
+    
+    
     def __init__(self):
+        #check if this is called manually and prevent it
+        if(DataCenter.__instance != None):
+            raise Exception("DataCenter already exists!")
+        
         #load all data in
         self.allusers = []
         self.user = User()
         self.read_from_file()
+        DataCenter.__instance = self
 
     def login(self, username, password):
         for user in self.allusers:
@@ -58,13 +72,15 @@ class DataCenter:
     #TEMPORARY
     def read_all_data(self):
         for user in self.allusers:
-            #print("USERNAME: "+user.username+" PASSWORD: "+user.password)
+            print("USERNAME: "+user.username+" PASSWORD: "+user.password)
             pass
 
 
 
 #user object itself
+#singleton design
 class User:
+        
     def __init__(self) -> None:
         self.username = ""
         self.password = ""
