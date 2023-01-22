@@ -12,6 +12,6 @@
 [√] set the correct difficulty multiplier
 
 
-ERRORS:
+BUGS:
     [ ] clicking enter while typing password adds a hidden character preventing the password from being correct
     [ ] fix issue when going from one screen to the next there is a chance of clicking a button
